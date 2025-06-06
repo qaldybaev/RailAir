@@ -1,0 +1,73 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-image: url("https://vaib.uz/wp-content/uploads/2024/09/778_1648488209.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100vh;
+  background-position: top;
+  background-attachment: fixed;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 30px;
+  background-color: rgba(0, 0, 0, 0.6);
+  height: 70px;
+  width: 100%;
+}
+
+.logo img {
+  height: 40px;
+  width: 250px;
+  margin: 10px;
+}
+.icon {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.icon a {
+  color: #ffffff;
+  font-size: 25px;
+  text-decoration: none;
+}
+
+.search-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+}
+
+
+.search-form {
+  background-color: rgba(0, 0, 0, 0.4);
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.search-form input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.search-form button {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+

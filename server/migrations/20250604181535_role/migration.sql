@@ -1,0 +1,2 @@
+-- CreateEnum
+CREATE TYPE "TicketStatus" AS ENUM ('BOOKED', 'PURCHASED', 'CANCELLED');

@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  USER
+}
+
+enum TicketStatus {
+  BOOKED
+  PURCHASED
+  CANCELLED
+}
+
+model User {
+  id          Int      @default(autoincrement()) @map("id") @db.Integer
+  name        String   @map("name") @db.VarChar(255)
+  email       String   @unique() @map("email") @db.VarChar(120)
+  phoneNumber String?  @map("phone_number") @db.VarChar(120)
+  password    String?  @map("password") @db.VarChar(255)
+  provider    String?  @map("provider")
+  providerId  String?  @map("provider_id") @db.VarChar(255)
+  role        Role     @map("role")
+  isBlocked   Boolean  @map("isBlocked") @db.Boolean()
+  createdAt   DateTime @default(now())
+  ticket      Ticket[]
+
+  @@id([id])
+  @@map("users")
+}
+
+model Flight {
+  id             Int      @default(autoincrement()) @map("id") @db.Integer
+  from           String   @map("from") @db.VarChar(255)
+  to             String   @map("to") @db.VarChar(255)
+  departureTime  DateTime @map("departureTime")
+  arrivalTime    DateTime @map("arrivalTime")
+  price          Float    @map("price")
+  seatCount      Int      @map("seatCount") @db.Integer
+  availableSeats Int      @map("availableSeats") @db.Integer
+  airline        String   @map("airline") @db.VarChar(255)
+  ticket         Ticket[]
+
+  @@id([id])
+  @@map("flight")
+}
+
+model Train {
+  id             Int      @default(autoincrement()) @map("id") @db.Integer
+  from           String   @map("from") @db.VarChar(255)
+  to             String   @map("to") @db.VarChar(255)
+  departureTime  DateTime @map("departureTime")
+  arrivalTime    DateTime @map("arrivalTime")
+  price          Float    @map("price")
+  seatCount      Int      @map("seatCount") @db.Integer
+  availableSeats Int      @map("availableSeats") @db.Integer
+  trainNumber    String   @map("trainNumber") @db.VarChar(100)
+  ticket         Ticket[]
+
+  @@id([id])
+  @@map("train")
+}
+
+model PassengerInfo {
+  id        Int      @default(autoincrement()) @map("id") @db.Integer
+  fullName  String   @map("fullName") @db.VarChar(255)
+  gender    String   @map("gender")
+  birthDate DateTime @map("birthDate")
+  passport  String   @map("passport") @db.VarChar(100)
+  ticketId  Int      @map("ticketId") @db.Integer
+  ticket    Ticket[]
+
+  @@id([id])
+  @@map("passenger_info")
+}
+
+model Ticket {
+  id              Int    @default(autoincrement()) @map("id") @db.Integer
+  userId          Int    @map("userId") @db.Integer
+  flightId        Int?   @map("flightId") @db.Integer
+  trainId         Int?   @map("trainId") @db.Integer
+  seatNumber      Int    @map("seatNumber") @db.Integer
+  status          String @map("status") @db.VarChar(50)
+  passengerInfoId Int?   @db.Integer
+
+  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  flight        Flight?        @relation(fields: [flightId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  train         Train?         @relation(fields: [trainId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  passengerInfo PassengerInfo? @relation(fields: [passengerInfoId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([id])
+  @@map("ticket")
+}
+
+model OtpCode {
+  id        Int      @default(autoincrement()) @map("id") @db.Integer
+  email     String   @map("email") @db.VarChar(255)
+  code      String   @map("code") @db.VarChar(10)
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  verified  Boolean  @default(false)
+
+  @@id([id])
+  @@map("otp_code")
+}
