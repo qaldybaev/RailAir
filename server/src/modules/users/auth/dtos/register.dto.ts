@@ -13,6 +13,8 @@ export class RegisterDto {
     @IsString()
     phoneNumber: string
 
+    provider?:string
+
     @ApiProperty({ type: "string" })
     @IsString()
     password: string

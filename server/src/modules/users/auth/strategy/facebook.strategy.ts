@@ -44,11 +44,15 @@ export class FacebookStrategy extends PassportStrategy(Strategy, 'facebook') {
             id: user.id,
             role: user.role,
         });
-        console.log(user)
+        const rToken = await this.jwtService.generateRefreshToken({
+            id: user.id,
+            role: user.role,
+        });
 
         return done(null, {
             user,
             accessToken: token,
+            refreshToken: rToken,
         });
     }
 }

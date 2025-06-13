@@ -1,0 +1,202 @@
+[
+  {
+    "from": "Tashkent",
+    "to": "Moscow",
+    "departureTime": "2025-06-10T09:00:00Z",
+    "arrivalTime": "2025-06-10T12:30:00Z",
+    "price": 320.5,
+    "seatCount": 180,
+    "availableSeats": 120,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Istanbul",
+    "departureTime": "2025-06-11T13:00:00Z",
+    "arrivalTime": "2025-06-11T16:45:00Z",
+    "price": 450.0,
+    "seatCount": 200,
+    "availableSeats": 150,
+    "airline": "Turkish Airlines"
+  },
+  {
+    "from": "Moscow",
+    "to": "Tashkent",
+    "departureTime": "2025-06-12T06:00:00Z",
+    "arrivalTime": "2025-06-12T11:00:00Z",
+    "price": 310.0,
+    "seatCount": 170,
+    "availableSeats": 95,
+    "airline": "Aeroflot"
+  },
+  {
+    "from": "Istanbul",
+    "to": "Tashkent",
+    "departureTime": "2025-06-13T14:30:00Z",
+    "arrivalTime": "2025-06-13T20:00:00Z",
+    "price": 430.0,
+    "seatCount": 180,
+    "availableSeats": 135,
+    "airline": "Pegasus"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Dubai",
+    "departureTime": "2025-06-14T09:45:00Z",
+    "arrivalTime": "2025-06-14T12:15:00Z",
+    "price": 370.0,
+    "seatCount": 150,
+    "availableSeats": 100,
+    "airline": "FlyDubai"
+  },
+  {
+    "from": "Dubai",
+    "to": "Tashkent",
+    "departureTime": "2025-06-15T20:00:00Z",
+    "arrivalTime": "2025-06-15T23:20:00Z",
+    "price": 360.0,
+    "seatCount": 160,
+    "availableSeats": 110,
+    "airline": "FlyDubai"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Seoul",
+    "departureTime": "2025-06-16T22:00:00Z",
+    "arrivalTime": "2025-06-17T08:30:00Z",
+    "price": 620.0,
+    "seatCount": 210,
+    "availableSeats": 160,
+    "airline": "Korean Air"
+  },
+  {
+    "from": "Seoul",
+    "to": "Tashkent",
+    "departureTime": "2025-06-17T19:00:00Z",
+    "arrivalTime": "2025-06-18T04:00:00Z",
+    "price": 610.0,
+    "seatCount": 210,
+    "availableSeats": 140,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Tashkent",
+    "to": "New York",
+    "departureTime": "2025-06-18T05:00:00Z",
+    "arrivalTime": "2025-06-18T20:00:00Z",
+    "price": 980.0,
+    "seatCount": 250,
+    "availableSeats": 210,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "New York",
+    "to": "Tashkent",
+    "departureTime": "2025-06-19T11:00:00Z",
+    "arrivalTime": "2025-06-20T02:30:00Z",
+    "price": 970.0,
+    "seatCount": 250,
+    "availableSeats": 200,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Frankfurt",
+    "departureTime": "2025-06-20T08:00:00Z",
+    "arrivalTime": "2025-06-20T12:45:00Z",
+    "price": 540.0,
+    "seatCount": 180,
+    "availableSeats": 140,
+    "airline": "Lufthansa"
+  },
+  {
+    "from": "Frankfurt",
+    "to": "Tashkent",
+    "departureTime": "2025-06-21T16:00:00Z",
+    "arrivalTime": "2025-06-21T22:00:00Z",
+    "price": 530.0,
+    "seatCount": 180,
+    "availableSeats": 130,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Beijing",
+    "departureTime": "2025-06-22T01:00:00Z",
+    "arrivalTime": "2025-06-22T10:00:00Z",
+    "price": 480.0,
+    "seatCount": 200,
+    "availableSeats": 165,
+    "airline": "China Southern"
+  },
+  {
+    "from": "Beijing",
+    "to": "Tashkent",
+    "departureTime": "2025-06-23T13:00:00Z",
+    "arrivalTime": "2025-06-23T21:00:00Z",
+    "price": 470.0,
+    "seatCount": 200,
+    "availableSeats": 150,
+    "airline": "China Southern"
+  },
+  {
+    "from": "Tashkent",
+    "to": "London",
+    "departureTime": "2025-06-24T10:30:00Z",
+    "arrivalTime": "2025-06-24T17:00:00Z",
+    "price": 700.0,
+    "seatCount": 220,
+    "availableSeats": 180,
+    "airline": "British Airways"
+  },
+  {
+    "from": "London",
+    "to": "Tashkent",
+    "departureTime": "2025-06-25T06:00:00Z",
+    "arrivalTime": "2025-06-25T14:00:00Z",
+    "price": 690.0,
+    "seatCount": 220,
+    "availableSeats": 175,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Delhi",
+    "departureTime": "2025-06-26T04:30:00Z",
+    "arrivalTime": "2025-06-26T08:00:00Z",
+    "price": 300.0,
+    "seatCount": 160,
+    "availableSeats": 100,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Delhi",
+    "to": "Tashkent",
+    "departureTime": "2025-06-27T09:00:00Z",
+    "arrivalTime": "2025-06-27T13:30:00Z",
+    "price": 290.0,
+    "seatCount": 160,
+    "availableSeats": 90,
+    "airline": "Uzbekistan Airways"
+  },
+  {
+    "from": "Tashkent",
+    "to": "Bangkok",
+    "departureTime": "2025-06-28T20:00:00Z",
+    "arrivalTime": "2025-06-29T05:00:00Z",
+    "price": 570.0,
+    "seatCount": 190,
+    "availableSeats": 140,
+    "airline": "Thai Airways"
+  },
+  {
+    "from": "Bangkok",
+    "to": "Tashkent",
+    "departureTime": "2025-06-29T22:00:00Z",
+    "arrivalTime": "2025-06-30T07:00:00Z",
+    "price": 560.0,
+    "seatCount": 190,
+    "availableSeats": 135,
+    "airline": "Uzbekistan Airways"
+  }
+]

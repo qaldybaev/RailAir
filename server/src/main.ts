@@ -3,17 +3,19 @@ import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ValidationPipe, VersioningType } from '@nestjs/common';
 import { HttpExceptionFilter } from './filter';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.setGlobalPrefix("/api")
 
+  app.setGlobalPrefix('/api');
 
   app.enableCors({
-  origin: 'http://localhost:4000',
-  credentials: true,
-});
+    origin: 'http://localhost:4000',
+    credentials: true,
+  });
 
+  app.use(cookieParser());
 
   app.enableVersioning({
     type: VersioningType.URI,
@@ -28,19 +30,19 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  app.useGlobalFilters(new HttpExceptionFilter())
+  app.useGlobalFilters(new HttpExceptionFilter());
   const config = new DocumentBuilder()
     .setTitle('RailAir API')
     .setVersion('1.0')
-    .addBearerAuth()
+    .addCookieAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('docs', app, documentFactory);
 
-  const PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000
+  const PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
   await app.listen(PORT, () => {
-    console.log(`Server is running ${PORT}`)
-    console.log(`Swagger http://localhost:${PORT}/docs`)
+    console.log(`Server is running ${PORT}`);
+    console.log(`Swagger http://localhost:${PORT}/docs`);
   });
 }
 bootstrap();

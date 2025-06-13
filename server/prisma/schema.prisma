@@ -19,17 +19,19 @@ enum TicketStatus {
 }
 
 model User {
-  id          Int      @default(autoincrement()) @map("id") @db.Integer
-  name        String   @map("name") @db.VarChar(255)
-  email       String   @unique() @map("email") @db.VarChar(120)
-  phoneNumber String?  @map("phone_number") @db.VarChar(120)
-  password    String?  @map("password") @db.VarChar(255)
-  provider    String?  @map("provider")
-  providerId  String?  @map("provider_id") @db.VarChar(255)
-  role        Role     @map("role")
-  isBlocked   Boolean  @map("isBlocked") @db.Boolean()
-  createdAt   DateTime @default(now())
-  ticket      Ticket[]
+  id            Int             @default(autoincrement()) @map("id") @db.Integer
+  name          String          @map("name") @db.VarChar(255)
+  email         String          @unique() @map("email") @db.VarChar(120)
+  phoneNumber   String?         @map("phone_number") @db.VarChar(120)
+  imageUrl      String?         @map("image_url") @db.VarChar(255)
+  password      String?         @map("password") @db.VarChar(255)
+  provider      String?         @map("provider")
+  providerId    String?         @map("provider_id") @db.VarChar(255)
+  role          Role            @map("role")
+  isBlocked     Boolean         @map("isBlocked") @db.Boolean()
+  createdAt     DateTime        @default(now())
+  ticket        Ticket[]
+  passengerInfo PassengerInfo[]
 
   @@id([id])
   @@map("users")
@@ -72,9 +74,11 @@ model PassengerInfo {
   fullName  String   @map("fullName") @db.VarChar(255)
   gender    String   @map("gender")
   birthDate DateTime @map("birthDate")
-  passport  String   @map("passport") @db.VarChar(100)
-  ticketId  Int      @map("ticketId") @db.Integer
-  ticket    Ticket[]
+  passport  String   @unique @map("passport") @db.VarChar(100)
+  userId    Int      @map("userId")
+
+  user   User     @relation(fields: [userId], references: [id])
+  Ticket Ticket[]
 
   @@id([id])
   @@map("passenger_info")
@@ -89,10 +93,11 @@ model Ticket {
   status          String @map("status") @db.VarChar(50)
   passengerInfoId Int?   @db.Integer
 
-  user          User           @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  flight        Flight?        @relation(fields: [flightId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  train         Train?         @relation(fields: [trainId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  passengerInfo PassengerInfo? @relation(fields: [passengerInfoId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  user          User           @relation(fields: [userId], references: [id])
+  flight        Flight?        @relation(fields: [flightId], references: [id])
+  train         Train?         @relation(fields: [trainId], references: [id])
+  passengerInfo PassengerInfo? @relation(fields: [passengerInfoId], references: [id])
 
   @@id([id])
   @@map("ticket")

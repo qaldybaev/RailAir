@@ -10,7 +10,6 @@ import * as bcrypt from 'bcryptjs';
 import { Role } from '@prisma/client';
 import { JwtHelper } from 'src/helpers';
 import { GoogleRegisterDto } from './dtos/validateSocialUser.dto';
-import * as crypto from 'crypto';
 import { MailService } from '../mail';
 
 @Injectable()
@@ -51,6 +50,7 @@ export class AuthService implements OnModuleInit {
         email: payload.email,
         phoneNumber: payload.phoneNumber,
         password: passwordHash,
+        provider:payload.provider || "local",
         role: Role.USER,
         isBlocked: false,
       },
@@ -246,7 +246,7 @@ export class AuthService implements OnModuleInit {
     });
 
     if (!otpRecord) {
-      throw new BadRequestException('Kod noto‘g‘ri yoki muddati o‘tgan');
+      throw new BadRequestException('Kod notogri yoki muddati otgan');
     }
     await this.prisma.otpCode.delete({
       where: { id: otpRecord.id },

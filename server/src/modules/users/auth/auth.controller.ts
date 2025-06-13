@@ -26,10 +26,23 @@ export class AuthController {
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
   async googleCallback(@Req() req: any, @Res() res: Response) {
-    const user = req.user;
+    const accessToken = req.user.accessToken.token;
+    const refreshToken = req.user.refreshToken.refreshToken;
+    res.cookie('accessToken', accessToken, {
+      sameSite: 'lax',
+      secure: false,
+      maxAge: 15 * 60 * 1000,
+    });
 
-       return res.redirect(`http://localhost:4000`);
+    res.cookie('refreshToken', refreshToken, {
+      sameSite: 'lax',
+      secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.redirect('http://localhost:4000');
   }
+
   @Get('/facebook')
   @UseGuards(AuthGuard('facebook'))
   async facebook() { }
@@ -37,8 +50,22 @@ export class AuthController {
   @Get('/facebook/callback')
   @UseGuards(AuthGuard('facebook'))
   async facebookCallback(@Req() req: any, @Res() res: Response) {
-    
-     return res.redirect(`http://localhost:4000`);
+    const accessToken = req.user.accessToken.token;
+    const refreshToken = req.user.refreshToken.refreshToken;
+
+    res.cookie('accessToken', accessToken, {
+      sameSite: 'lax',
+      secure: false,
+      maxAge: 15 * 60 * 1000,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      sameSite: 'lax',
+      secure: false,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return res.redirect(`http://localhost:4000`);
   }
 
   @Post('register')
@@ -51,8 +78,34 @@ export class AuthController {
   @Post('login')
   @Protected(false)
   @Roles([Role.ADMIN, Role.USER])
-  async login(@Body() body: LoginDto) {
-    return await this.service.login(body);
+  async login(
+    @Body() body: LoginDto,
+    @Res({ passthrough: true }) res: Response,
+  ) {
+    const data = await this.service.login(body);
+    console.log(data.data);
+
+    const accessToken = data.data.token;
+    const refreshToken = data.data.refreshToken;
+    const user = data.data.user;
+
+    res.cookie('accessToken', accessToken, {
+      maxAge: 15 * 60 * 1000,
+      sameSite: 'lax',
+      secure: false,
+    });
+
+    res.cookie('refreshToken', refreshToken, {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      sameSite: 'lax',
+      secure: false,
+    });
+
+    return {
+      message: 'Login muvaffaqiyatli',
+      accessToken,
+      user,
+    };
   }
 
   @Post('forgot-password')
@@ -72,8 +125,9 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() body: { email: string, code: string; newPassword: string }) {
+  async resetPassword(
+    @Body() body: { email: string; code: string; newPassword: string },
+  ) {
     return this.service.resetPassword(body);
   }
-
 }

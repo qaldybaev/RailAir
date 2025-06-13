@@ -1,10 +1,8 @@
 import {
-  BadRequestException,
   CanActivate,
   ExecutionContext,
   Injectable,
   UnauthorizedException,
-  ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
@@ -33,17 +31,51 @@ export class CheckAuthGuard implements CanActivate {
       return true;
     }
 
-    const authHeader = req.headers['authorization'];
-    const refreshToken = req.headers['x-refresh-token'];
+    const accessToken = req.cookies?.accessToken;
+    const refreshToken = req.cookies?.refreshToken;
 
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
-      throw new BadRequestException(
-        "Authorization headerda Bearer token bo'lishi kerak",
-      );
+    if (!accessToken) {
+      if (!refreshToken) {
+        throw new UnauthorizedException('Access token mavjud emas');
+      }
+
+      try {
+        const refreshData =
+          await this.jwtHelper.verifyRefreshToken(refreshToken);
+
+        const { token: newAccessToken } = await this.jwtHelper.generateToken({
+          id: refreshData.id,
+          role: refreshData.role,
+        });
+
+        const { refreshToken: newRefreshToken } =
+          await this.jwtHelper.generateRefreshToken({
+            id: refreshData.id,
+            role: refreshData.role,
+          });
+
+        res.cookie('accessToken', newAccessToken, {
+          maxAge: 1000 * 60 * 15,
+          sameSite: 'lax',
+          secure: false,
+        });
+
+        res.cookie('refreshToken', newRefreshToken, {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          sameSite: 'lax',
+          secure: false,
+        });
+
+        req.role = refreshData.role;
+        req.userId = refreshData.id;
+
+        return true;
+      } catch {
+        throw new UnauthorizedException(
+          "Refresh token noto'g'ri yoki muddati tugagan",
+        );
+      }
     }
-
-    const accessToken = authHeader.split(' ')[1];
-
     try {
       const data = await this.jwtHelper.verifyToken(accessToken);
 
@@ -51,37 +83,49 @@ export class CheckAuthGuard implements CanActivate {
       req.userId = data.id;
 
       return true;
-    } catch (error) {
-      if (error instanceof ForbiddenException && refreshToken) {
-        try {
-          const refreshData = await this.jwtHelper.verifyToken(refreshToken);
+    } catch {
+      if (!refreshToken) {
+        throw new UnauthorizedException(
+          "Access token noto'g'ri yoki muddati tugagan",
+        );
+      }
 
-          const { token: newAccessToken } = await this.jwtHelper.generateToken({
+      try {
+        const refreshData =
+          await this.jwtHelper.verifyRefreshToken(refreshToken);
+
+        const { token: newAccessToken } = await this.jwtHelper.generateToken({
+          id: refreshData.id,
+          role: refreshData.role,
+        });
+
+        const { refreshToken: newRefreshToken } =
+          await this.jwtHelper.generateRefreshToken({
             id: refreshData.id,
             role: refreshData.role,
           });
 
-          const { refreshToken: newRefreshToken } =
-            await this.jwtHelper.generateRefreshToken({
-              id: refreshData.id,
-              role: refreshData.role,
-            });
+        res.cookie('accessToken', newAccessToken, {
+          maxAge: 1000 * 60 * 15,
+          sameSite: 'lax',
+          secure: false,
+        });
 
-          res.setHeader('Authorization', `Bearer ${newAccessToken}`);
-          res.setHeader('x-refresh-token', newRefreshToken);
+        res.cookie('refreshToken', newRefreshToken, {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          sameSite: 'lax',
+          secure: false,
+        });
 
-          req.role = refreshData.role;
-          req.userId = refreshData.id;
+        req.role = refreshData.role;
+        req.userId = refreshData.id;
 
-          return true;
-        } catch {
-          throw new UnauthorizedException(
-            "Refresh token noto'g'ri yoki muddati tugagan",
-          );
-        }
+        return true;
+      } catch {
+        throw new UnauthorizedException(
+          "Refresh token noto'g'ri yoki muddati tugagan",
+        );
       }
-
-      throw error;
     }
   }
 }

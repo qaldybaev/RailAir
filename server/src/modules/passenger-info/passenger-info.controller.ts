@@ -10,35 +10,35 @@ export class PassengerInfoController {
   constructor(private readonly passengerInfoService: PassengerInfoService) { }
 
   @Post()
-  @Protected(false)
+  @Protected(true)
   @Roles([Role.ADMIN, Role.USER])
   create(@Body() createPassengerInfoDto: body) {
     return this.passengerInfoService.create(createPassengerInfoDto);
   }
 
   @Get()
-  @Protected(false)
-  @Roles([Role.ADMIN, Role.USER])
+  @Protected(true)
+  @Roles([Role.ADMIN])
   findAll() {
     return this.passengerInfoService.findAll();
   }
 
   @Get(':id')
-  @Protected(false)
+  @Protected(true)
   @Roles([Role.ADMIN, Role.USER])
   findOne(@Param('id', ParseIntPipe) id: number) {
     return this.passengerInfoService.findOne(id);
   }
 
   @Patch(':id')
-  @Protected(false)
+  @Protected(true)
   @Roles([Role.ADMIN, Role.USER])
   update(@Param('id', ParseIntPipe) id: number, @Body() body: UpdatePassengerInfoDto) {
     return this.passengerInfoService.update(id, body);
   }
 
   @Delete(':id')
-  @Protected(false)
+  @Protected(true)
   @Roles([Role.ADMIN, Role.USER])
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.passengerInfoService.remove(id);

@@ -1,4 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { FlightService } from './flight.service';
 import { CreateFlightDto } from './dto';
 import { UpdateFlightDto } from './dto';
@@ -8,12 +18,24 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('flight')
 export class FlightController {
-  constructor(private readonly flightService: FlightService) { }
+  constructor(private readonly flightService: FlightService) {}
   @Get()
   @Protected(false)
   @Roles([Role.ADMIN, Role.USER])
   findAll() {
     return this.flightService.findAll();
+  }
+
+  @Get('search')
+  @Protected(false)
+  @Roles([Role.ADMIN, Role.USER])
+  async search(
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('date') date?: string,
+  ) {
+    const flights = await this.flightService.search(from, to, date);
+    return flights;
   }
 
   @Post()
@@ -23,7 +45,6 @@ export class FlightController {
   create(@Body() body: CreateFlightDto) {
     return this.flightService.create(body);
   }
-
 
   @Patch(':id')
   @ApiBearerAuth()

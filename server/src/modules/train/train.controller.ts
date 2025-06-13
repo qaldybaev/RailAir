@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Query } from '@nestjs/common';
 import { TrainService } from './train.service';
 import { CreateTrainDto } from './dto/create-train.dto';
 import { UpdateTrainDto } from './dto/update-train.dto';
@@ -12,11 +12,20 @@ export class TrainController {
 
 
   @Get()
-  @ApiBearerAuth()
   @Protected(false)
   @Roles([Role.ADMIN, Role.USER])
   findAll() {
     return this.trainService.findAll();
+  }
+
+  @Get('search')
+  async search(
+    @Query('from') from: string,
+    @Query('to') to: string,
+    @Query('date') date?: string,
+  ) {
+    const trains = await this.trainService.search(from, to, date);
+    return trains;
   }
 
   @Post()

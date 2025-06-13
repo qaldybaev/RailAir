@@ -17,7 +17,7 @@ import { Role } from '@prisma/client';
 
 @Controller('ticket')
 export class TicketController {
-  constructor(private readonly ticketService: TicketService) {}
+  constructor(private readonly ticketService: TicketService) { }
 
   @Post()
   @Protected(false)
@@ -33,6 +33,14 @@ export class TicketController {
   findAll() {
     return this.ticketService.findAll();
   }
+  @Get('user/:userId')
+  @ApiBearerAuth()
+  @Protected(true)
+  @Roles([Role.ADMIN, Role.USER])
+  findByUser(@Param('userId', ParseIntPipe) userId: number) {
+    return this.ticketService.findByUserId(userId);
+  }
+
 
   @Get(':id')
   @ApiBearerAuth()

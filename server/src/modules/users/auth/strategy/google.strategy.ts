@@ -7,7 +7,10 @@ import { Role } from '@prisma/client';
 
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
-  constructor(private readonly userService: AuthService, private jwtService: JwtHelper) {
+  constructor(
+    private readonly userService: AuthService,
+    private jwtService: JwtHelper,
+  ) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -22,18 +25,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
     profile: any,
     done: any,
   ): Promise<any> {
-
-    const email = profile._json.email
+    const email = profile._json.email;
     const name = profile.displayName;
     const providerId = profile.id;
-
 
     const user = await this.userService.validateSocialUser({
       name,
       email,
-      phoneNumber: "",
+      phoneNumber: '',
       password: '',
-      provider: 'facebook',
+      provider: 'google',
       role: Role.USER,
       providerId,
     });
@@ -42,11 +43,16 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
       id: user.id,
       role: user.role,
     });
-    console.log(user)
+
+    const rToken = await this.jwtService.generateRefreshToken({
+      id: user.id,
+      role: user.role,
+    });
 
     return done(null, {
       user,
       accessToken: token,
+      refreshToken: rToken,
     });
   }
 }

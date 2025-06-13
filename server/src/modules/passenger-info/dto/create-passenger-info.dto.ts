@@ -1,13 +1,18 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
-import { IsString, IsDate, IsInt } from 'class-validator';
+import {
+    IsString,
+    IsDate,
+    IsNumber,
+    IsInt,
+} from 'class-validator';
 
 export class CreatePassengerInfoDto {
-    @ApiProperty({ type: "string", example: 'John Doe' })
+    @ApiProperty({ type: 'string', example: 'John Doe' })
     @IsString()
     fullName: string;
 
-    @ApiProperty({ type: "string", example: 'male' })
+    @ApiProperty({ type: 'string', example: 'male' })
     @IsString()
     gender: string;
 
@@ -16,11 +21,13 @@ export class CreatePassengerInfoDto {
     @Type(() => Date)
     birthDate: Date;
 
-    @ApiProperty({ type: "string", example: 'AB1234567' })
+    @ApiProperty({ type: 'string', example: 'AB1234567' })
     @IsString()
     passport: string;
 
-    @ApiProperty({ example: 1, type: "number" })
+    @ApiProperty({ example: 1 })
+    @Type(() => Number)
     @IsInt()
-    ticketId: number;
+    userId: number;
+
 }
