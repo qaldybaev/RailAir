@@ -1,0 +1,64 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e3f2fd, #f7f7f7);
+  margin: 0;
+  padding: 30px;
+}
+
+.container {
+  max-width: 520px;
+  margin: auto;
+  background: #ffffff;
+  padding: 25px 30px;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+input, button, label {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+input, button {
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  background: linear-gradient(to right, #007bff, #0056b3);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+button:hover {
+  background: linear-gradient(to right, #0056b3, #004494);
+}
+
+#message {
+  margin-top: 18px;
+  font-weight: 600;
+  color: green;
+  font-size: 15px;
+}

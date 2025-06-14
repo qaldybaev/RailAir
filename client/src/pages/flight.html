@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flight qo‘shish</title>
+   <link rel="icon" type="image/webp" href="../public/images/YBNIHdffpf-905.webp">
+  <link rel="stylesheet" href="../style/flight.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Yangi reys qo‘shish</h1>
+    <form id="flightForm">
+      <input type="text" id="from" placeholder="Qayerdan" required />
+      <input type="text" id="to" placeholder="Qayerga" required />
+      
+      <label for="departureTime">Chiqish vaqti:</label>
+      <input type="datetime-local" id="departureTime" required />
+      
+      <label for="arrivalTime">Kelish vaqti:</label>
+      <input type="datetime-local" id="arrivalTime" required />
+      
+      <input type="number" id="price" placeholder="Narx ($)" required min="0" step="0.01" />
+      <input type="number" id="seatCount" placeholder="O‘rindiqlar soni" required min="1" />
+      <input type="number" id="availableSeats" placeholder="Bo‘sh o‘rinlar" required min="0" />
+      <input type="text" id="airline" placeholder="Aviakompaniya" required />
+      <button type="submit">Qo‘shish</button>
+    </form>
+    
+    <div id="message"></div>
+  </div>
+
+  <script type="module" src="../js/flight.js"></script>
+</body>
+</html>

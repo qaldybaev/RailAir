@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Foydalanuvchi yaratish</title>
+  <link rel="stylesheet" href="../style/admin.css" />
+   <link rel="icon" type="image/webp" href="../public/images/YBNIHdffpf-905.webp">
+</head>
+<body>
+  <div class="container">
+    <h2>Yangi foydalanuvchi yaratish</h2>
+    <form id="createUserForm">
+      <label for="name">Ism:</label>
+      <input type="text" id="name" name="name" required />
+
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required />
+
+      <label for="phoneNumber">Telefon raqami:</label>
+      <input type="tel" id="phoneNumber" name="phoneNumber" />
+
+      <label for="password">Parol:</label>
+      <input type="password" id="password" name="password" required />
+
+      <label for="role">Rol:</label>
+      <select id="role" name="role" required>
+        <option value="USER">User</option>
+        <option value="ADMIN">Admin</option>
+      </select>
+
+      <label>
+        <input type="checkbox" id="isBlocked" name="isBlocked" />
+        Bloklangan
+      </label>
+
+      <button type="submit">Yaratish</button>
+      <div id="createUserMessage" style="display:none; margin-top:10px;"></div>
+
+    </form>
+  </div>
+  <script type="module" src="../js/admin.js"></script>
+</body>
+</html>

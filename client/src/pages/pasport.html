@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Tanlangan Yo‘nalish</title>
+    <link
+      rel="icon"
+      type="image/webp"
+      href="../public/images/YBNIHdffpf-905.webp"
+    />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right, #f0f2f5, #d9e4f5);
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        color: #333;
+      }
+
+      h1 {
+        text-align: center;
+        color: #007bff;
+        margin-bottom: 30px;
+      }
+
+      #ticketInfo {
+        background-color: #fff;
+        border-left: 5px solid #007bff;
+        padding: 20px;
+        margin-bottom: 25px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      form {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      }
+
+      input[type="text"],
+      input[type="date"] {
+        width: 98%;
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        font-size: 14px;
+      }
+
+      label {
+        font-weight: bold;
+        margin-top: 10px;
+        display: block;
+        color: #444;
+      }
+
+      input[type="radio"] {
+        margin-right: 8px;
+        transform: scale(1.1);
+      }
+
+      .radio-group {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      button {
+        display: block;
+        width: 100%;
+        padding: 12px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tanlangan Chiptangiz</h1>
+    <div id="ticketInfo"></div>
+
+    <form id="passengerForm">
+      <input type="text" name="fullName" placeholder="Ism Familiya" required />
+      <label for="">Tug'ilgan sana</label>
+      <input
+        type="date"
+        name="birthDate"
+        placeholder="Tug'ilgan sana"
+        required
+      />
+      <input
+        type="text"
+        name="passport"
+        placeholder="Pasport nomer (AB1234567)"
+        pattern="[A-Z]{2}[0-9]{7}"
+        required
+      />
+      <div class="radio-group">
+        <label for="male"
+          ><input type="radio" id="male" name="gender" value="male" required />
+          Erkak</label
+        >
+        <label for="female"
+          ><input type="radio" id="female" name="gender" value="female" />
+          Ayol</label
+        >
+      </div>
+
+      <button type="submit">Jo'natish</button>
+      <div id="passengerMessage"></div>
+    </form>
+
+    <section id="seatSection" style="display: none; margin-top: 30px">
+      <form id="seatForm">
+        <label for="seatNumber">Joy raqami tanlang:</label>
+        <input
+          type="text"
+          id="seatNumber"
+          name="seatNumber"
+          placeholder="Masalan: 12"
+          required
+        />
+        <button type="submit">Chiptani rasmiylashtirish</button>
+          <div id="ticketMessage"></div>
+      </form>
+    </section>
+
+    <script type="module" src="../js/pasport.js"></script>
+  </body>
+</html>

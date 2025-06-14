@@ -1,0 +1,78 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #e0f7fa, #ffffff);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.container {
+  background: #fff;
+  padding: 35px 45px;
+  border-radius: 10px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  width: 360px;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: scale(1.01);
+}
+
+h2 {
+  margin-bottom: 25px;
+  color: #004d7a;
+  text-align: center;
+  font-size: 24px;
+}
+
+form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #333;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"],
+form input[type="password"],
+form select {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 18px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+}
+
+form input:focus,
+form select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+form input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+form button {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(to right, #007bff, #0056b3);
+  border: none;
+  color: white;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: linear-gradient(to right, #0056b3, #003d80);
+}
