@@ -218,7 +218,7 @@ export class AuthService implements OnModuleInit {
 
     const code = Math.floor(100000 + Math.random() * 900000).toString();
 
-    const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
+    const expiresAt = new Date(Date.now() + 1 * 60 * 1000);
 
     await this.prisma.otpCode.create({
       data: { email, code, expiresAt },

@@ -1,0 +1,43 @@
+name: Deploy to Ubuntu server with PM2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup SSH agent
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy server and client
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+        set -eux 
+
+        cd ${{ secrets.DEPLOY_PATH }}
+
+        echo "Pulling latest changes"
+        git pull origin main
+
+        echo "Building client"
+        cd client
+        npm install
+        npm run build
+
+        echo "Building and restarting server"
+        cd ../server
+        npm install
+        pm2 restart kinoTop || pm2 start src/main.js --name kinoTop
+
+        echo "Deployment completed successfully"
+        EOF
+

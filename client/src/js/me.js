@@ -26,21 +26,17 @@ async function getUserProfile() {
 
     const fileInput = document.createElement("input");
     fileInput.type = "file";
-    fileInput.accept = "image*";
+    fileInput.accept = "image/*"; // fix: image* -> image/*
     fileInput.style.display = "none";
 
     const editIcon = document.createElement("button");
     editIcon.type = "button";
     editIcon.innerHTML = `<i class="bi bi-camera"></i>`;
-    editIcon.classList.add(
-      "btn",
-      "btn-sm",
-      "btn-outline-primary",
-      "edit-photo-btn"
-    );
+    editIcon.classList.add("btn", "btn-sm", "btn-outline-primary", "edit-photo-btn");
 
     editIcon.onclick = () => fileInput.click();
 
+    const msgBox = document.querySelector(".meMessage");
     fileInput.onchange = async () => {
       const file = fileInput.files[0];
       if (!file) return;
@@ -49,51 +45,43 @@ async function getUserProfile() {
       formData.append("image", file);
 
       try {
-        const res = await customAxios.patch("/users/me", formData, {
+        await customAxios.patch("/users/me", formData, {
           headers: { "Content-Type": "multipart/form-data" },
         });
 
         location.reload();
       } catch (err) {
-        console.error("Rasmni yuklashda xatolik:", err);
-        alert("Rasmni yuklashda xatolik yuz berdi.");
+        msgBox.style.display = "block";
+        msgBox.style.color = "red";
+        msgBox.textContent = err?.response?.data?.message || "Rasm yuklashda xatolik!";
+        setTimeout(() => {
+          msgBox.style.display = "none";
+          msgBox.textContent = "";
+        }, 3000);
       }
     };
 
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.innerHTML = `<i class="bi bi-trash3-fill"></i>`;
-    deleteBtn.classList.add(
-      "btn",
-      "btn-sm",
-      "btn-outline-danger",
-      "ms-2",
-      "delete-photo-btn"
-    );
+    deleteBtn.classList.add("btn", "btn-sm", "btn-outline-danger", "ms-2", "delete-photo-btn");
 
     deleteBtn.onclick = async () => {
       if (!confirm("Rostdan ham rasmni ochirmoqchimisiz?")) return;
 
       try {
-        const res = await customAxios.delete("/users/me/photo", {
-          image: null,
-        });
-        const imageUrl =
-          "../public/images/railair-high-resolution-logo-transparent.png";
-        profileImage.src = `https://i.pinimg.com/1200x/c5/07/8e/c5078ec7b5679976947d90e4a19e1bbb.jpg`;
-
+        await customAxios.delete("/users/me/photo");
+        profileImage.src = "https://i.pinimg.com/1200x/c5/07/8e/c5078ec7b5679976947d90e4a19e1bbb.jpg";
       } catch (err) {
-        console.error("Rasmni ochirishda xatolik:", err);
-        alert("Rasmni ochirishda xatolik yuz berdi.");
+        msgBox.textContent = "Rasmni yuklashda xatolik:";
       }
     };
 
     imageForm.appendChild(fileInput);
     imageForm.appendChild(editIcon);
+    imageForm.appendChild(deleteBtn);
     imageWrapper.appendChild(profileImage);
     imageWrapper.appendChild(imageForm);
-    imageForm.appendChild(deleteBtn);
-
     container.prepend(imageWrapper);
 
     const fields = [
@@ -164,7 +152,7 @@ async function getUserProfile() {
             if (key === "phoneNumber") {
               const phoneRegex = /^\+998[0-9]{9}$/;
               if (!phoneRegex.test(newValue)) {
-                alert("Telefon raqam notogri formatta (+998940123654)");
+                alert("Telefon raqam notogri formatda (+998940123654)");
                 return;
               }
             }
@@ -195,11 +183,28 @@ async function getUserProfile() {
       container.appendChild(fieldElement);
     });
 
+    const deleteProfileBtn = document.createElement("button");
+    deleteProfileBtn.textContent = "> Profilni o'chirish <";
+    deleteProfileBtn.classList.add("btn", "btn-danger", "mt-3");
+
+    deleteProfileBtn.onclick = async () => {
+      const confirmDelete = confirm("Rostdan ham profilingizni o‘chirmoqchimisiz?");
+      if (!confirmDelete) return;
+
+      try {
+        await customAxios.delete("/users/me/profile");
+        document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        window.location.href = "../pages/login.html";
+      } catch (error) {
+        msgBox.textContent = "Ochirishda xatolik yuz berdi";
+      }
+    };
+    
     const createdAt = document.createElement("p");
-    createdAt.innerHTML = `<strong>Ro'yxatdan o'tgan vaqt:</strong> ${new Date(
-      me.createdAt
-    ).toLocaleString()}`;
+    createdAt.innerHTML = `<strong>Ro'yxatdan o'tgan vaqt:</strong> ${new Date(me.createdAt).toLocaleString()}`;
     container.appendChild(createdAt);
+    container.appendChild(deleteProfileBtn);
   } catch (error) {
     console.error("Foydalanuvchi ma'lumotlarini olishda xatolik:", error);
   }

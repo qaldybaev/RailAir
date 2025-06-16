@@ -93,6 +93,8 @@ function parseJwt(token) {
 document.addEventListener("DOMContentLoaded", () => {
   const accessToken = getCookie("accessToken");
   if (accessToken) {
+    const logout = document.getElementById("logout");
+    if (logout) logout.classList.remove("hidden");
     const payload = parseJwt(accessToken);
     localStorage.setItem("user", payload?.id);
     if (payload?.role?.toLowerCase() === "admin") {
@@ -113,6 +115,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+
 document.getElementById("myPageLink").addEventListener("click", (e) => {
   e.preventDefault();
   const token = getCookie("accessToken");
@@ -123,6 +126,21 @@ document.getElementById("myPageLink").addEventListener("click", (e) => {
     window.location.href = "./pages/me.html";
   }
 });
+
+const logoutBtn = document.getElementById("logout");
+if (logoutBtn) {
+  logoutBtn.addEventListener("click", () => {
+    const confirmed = confirm("Rostdan ham chiqmoqchimisiz?");
+    if (!confirmed) return;
+
+    document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    localStorage.removeItem("user");
+    localStorage.removeItem("reset_email");
+    localStorage.removeItem("selectedTicket");
+  });
+}
+
 
 let currentMode = "avia";
 
@@ -193,33 +211,32 @@ function createSearchForm(fromPlaceholder, toPlaceholder, includeDate = false) {
     form.append(classSelect);
   }
   if (currentMode === "train") {
-  const classSelect = document.createElement("select");
-  classSelect.id = "trainClassSelect";
-  classSelect.className = "ticket-class";
+    const classSelect = document.createElement("select");
+    classSelect.id = "trainClassSelect";
+    classSelect.className = "ticket-class";
 
-  const defaultOption = document.createElement("option");
-  defaultOption.value = "";
-  defaultOption.textContent = "🚆 Klassni tanlang";
-  defaultOption.disabled = true;
-  defaultOption.selected = true;
-  classSelect.appendChild(defaultOption);
+    const defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "🚆 Klassni tanlang";
+    defaultOption.disabled = true;
+    defaultOption.selected = true;
+    classSelect.appendChild(defaultOption);
 
-  const options = [
-    { value: "kupe", text: "Kupe" },
-    { value: "platskart", text: "Platskart" },
-    { value: "lyuks", text: "Lyuks" },
-  ];
+    const options = [
+      { value: "kupe", text: "Kupe" },
+      { value: "platskart", text: "Platskart" },
+      { value: "lyuks", text: "Lyuks" },
+    ];
 
-  options.forEach((opt) => {
-    const option = document.createElement("option");
-    option.value = opt.value;
-    option.textContent = opt.text;
-    classSelect.appendChild(option);
-  });
+    options.forEach((opt) => {
+      const option = document.createElement("option");
+      option.value = opt.value;
+      option.textContent = opt.text;
+      classSelect.appendChild(option);
+    });
 
-  form.append(classSelect);
-}
-
+    form.append(classSelect);
+  }
 
   const submitBtn = document.createElement("button");
   submitBtn.type = "submit";

@@ -11,7 +11,7 @@ async function bootstrap() {
   app.setGlobalPrefix('/api');
 
   app.enableCors({
-    origin: 'http://localhost:4000',
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   });
 
@@ -37,8 +37,9 @@ async function bootstrap() {
     .addCookieAuth()
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('docs', app, documentFactory);
-
+  if (process.env?.NODE_ENV?.trim() === "development") {
+    SwaggerModule.setup('docs', app, documentFactory);
+  }
   const PORT = process.env.APP_PORT ? Number(process.env.APP_PORT) : 4000;
   await app.listen(PORT, () => {
     console.log(`Server is running ${PORT}`);

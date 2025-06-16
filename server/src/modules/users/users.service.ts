@@ -63,85 +63,88 @@ export class UsersService {
   }
 
   async updateMe(id: number, payload: UpdateMyProfileDto, image: Express.Multer.File) {
-  const user = await this.prisma.user.findUnique({ where: { id } });
-  if (!user) throw new NotFoundException("Foydalanuvchi topilmadi");
+    const user = await this.prisma.user.findUnique({ where: { id } });
+    if (!user) throw new NotFoundException("Foydalanuvchi topilmadi");
 
-  let passwordHash = user.password;
-  if (payload.password) {
-    passwordHash = await bcrypt.hash(payload.password, 10);
-  }
-
-  const existingUser = await this.prisma.user.findFirst({
-    where: {
-      OR: [
-        { email: payload.email },
-        { phoneNumber: payload.phoneNumber }
-      ],
-      NOT: { id }
+    let passwordHash = user.password;
+    if (payload.password) {
+      passwordHash = await bcrypt.hash(payload.password, 10);
     }
-  });
-  if (existingUser) {
-    throw new ConflictException("Bu email yoki telefon raqami band");
-  }
 
-  let fileUrl = user.imageUrl;
-  if (image) {
-    if (user.imageUrl) {
-      const oldPath = user.imageUrl
-      if (oldPath) {
-        await this.fsService.deleteFile(oldPath);
+    const existingUser = await this.prisma.user.findFirst({
+      where: {
+        OR: [
+          { email: payload.email },
+          { phoneNumber: payload.phoneNumber }
+        ],
+        NOT: { id }
       }
+    });
+    if (existingUser) {
+      throw new ConflictException("Bu email yoki telefon raqami band");
     }
 
-    const filePath = await this.fsService.uploadFile(image);
-    fileUrl = filePath.fileUrl;
-  }
+    let fileUrl = user.imageUrl;
+    if (image) {
+      if (user.imageUrl) {
+        const oldPath = user.imageUrl
+        if (oldPath) {
+          await this.fsService.deleteFile(oldPath);
+        }
+      }
 
-  const updated = await this.prisma.user.update({
-    where: { id },
-    data: {
-      name: payload.name,
-      email: payload.email,
-      phoneNumber: payload.phoneNumber,
-      imageUrl: fileUrl,
-      password: passwordHash,
+      const filePath = await this.fsService.uploadFile(image);
+      fileUrl = filePath.fileUrl;
     }
-  });
 
-  return {
-    message: "Profil yangilandi ✅",
-    data: updated,
-  };
-}
+    const updated = await this.prisma.user.update({
+      where: { id },
+      data: {
+        name: payload.name,
+        email: payload.email,
+        phoneNumber: payload.phoneNumber,
+        imageUrl: fileUrl,
+        password: passwordHash,
+      }
+    });
 
-async deleteProfileImage(userId: number) {
-  const user = await this.prisma.user.findUnique({ where: { id: userId } });
-
-  if (!user) {
-    throw new NotFoundException("Foydalanuvchi topilmadi");
+    return {
+      message: "Profil yangilandi ✅",
+      data: updated,
+    };
   }
 
-  if (!user.imageUrl) {
-    throw new BadRequestException("Foydalanuvchining rasmi mavjud emas");
+  async deleteProfileImage(userId: number) {
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+
+    if (!user) {
+      throw new NotFoundException("Foydalanuvchi topilmadi");
+    }
+
+    if (!user.imageUrl) {
+      throw new BadRequestException("Foydalanuvchining rasmi mavjud emas");
+    }
+    await this.fsService.deleteFile(user.imageUrl);
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id: userId },
+      data: { imageUrl: null },
+    });
+
+    return {
+      message: "Rasm muvaffaqiyatli o'chirildi ✅",
+      data: updatedUser,
+    };
   }
-  await this.fsService.deleteFile(user.imageUrl);
-
-  const updatedUser = await this.prisma.user.update({
-    where: { id: userId },
-    data: { imageUrl: null },
-  });
-
-  return {
-    message: "Rasm muvaffaqiyatli o'chirildi ✅",
-    data: updatedUser,
-  };
-}
 
   async remove(id: number) {
     const user = await this.prisma.user.findUnique({ where: { id } })
 
     if (!user) {
       throw new NotFoundException("Id boyicha foydalanuvchi topilmadi")
+    }
+    if (user.imageUrl) {
+      await this.fsService.deleteFile(user.imageUrl);
     }
 
     await this.prisma.user.delete({ where: { id } })
