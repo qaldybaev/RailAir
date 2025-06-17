@@ -32,7 +32,12 @@ async function getUserProfile() {
     const editIcon = document.createElement("button");
     editIcon.type = "button";
     editIcon.innerHTML = `<i class="bi bi-camera"></i>`;
-    editIcon.classList.add("btn", "btn-sm", "btn-outline-primary", "edit-photo-btn");
+    editIcon.classList.add(
+      "btn",
+      "btn-sm",
+      "btn-outline-primary",
+      "edit-photo-btn"
+    );
 
     editIcon.onclick = () => fileInput.click();
 
@@ -53,7 +58,8 @@ async function getUserProfile() {
       } catch (err) {
         msgBox.style.display = "block";
         msgBox.style.color = "red";
-        msgBox.textContent = err?.response?.data?.message || "Rasm yuklashda xatolik!";
+        msgBox.textContent =
+          err?.response?.data?.message || "Rasm yuklashda xatolik!";
         setTimeout(() => {
           msgBox.style.display = "none";
           msgBox.textContent = "";
@@ -64,14 +70,21 @@ async function getUserProfile() {
     const deleteBtn = document.createElement("button");
     deleteBtn.type = "button";
     deleteBtn.innerHTML = `<i class="bi bi-trash3-fill"></i>`;
-    deleteBtn.classList.add("btn", "btn-sm", "btn-outline-danger", "ms-2", "delete-photo-btn");
+    deleteBtn.classList.add(
+      "btn",
+      "btn-sm",
+      "btn-outline-danger",
+      "ms-2",
+      "delete-photo-btn"
+    );
 
     deleteBtn.onclick = async () => {
       if (!confirm("Rostdan ham rasmni ochirmoqchimisiz?")) return;
 
       try {
         await customAxios.delete("/users/me/photo");
-        profileImage.src = "https://i.pinimg.com/1200x/c5/07/8e/c5078ec7b5679976947d90e4a19e1bbb.jpg";
+        profileImage.src =
+          "https://i.pinimg.com/1200x/c5/07/8e/c5078ec7b5679976947d90e4a19e1bbb.jpg";
       } catch (err) {
         msgBox.textContent = "Rasmni yuklashda xatolik:";
       }
@@ -188,21 +201,32 @@ async function getUserProfile() {
     deleteProfileBtn.classList.add("btn", "btn-danger", "mt-3");
 
     deleteProfileBtn.onclick = async () => {
-      const confirmDelete = confirm("Rostdan ham profilingizni o‘chirmoqchimisiz?");
+      const confirmDelete = confirm(
+        "Rostdan ham profilingizni o‘chirmoqchimisiz?"
+      );
       if (!confirmDelete) return;
 
       try {
         await customAxios.delete("/users/me/profile");
-        document.cookie = "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-        document.cookie = "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie =
+          "accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        document.cookie =
+          "refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
         window.location.href = "../pages/login.html";
       } catch (error) {
         msgBox.textContent = "Ochirishda xatolik yuz berdi";
+        msgBox.style.color = "red"
+        setTimeout(() => {
+          msgBox.style.display = "none";
+          msgBox.textContent = "";
+        }, 3000);
       }
     };
-    
+
     const createdAt = document.createElement("p");
-    createdAt.innerHTML = `<strong>Ro'yxatdan o'tgan vaqt:</strong> ${new Date(me.createdAt).toLocaleString()}`;
+    createdAt.innerHTML = `<strong>Ro'yxatdan o'tgan vaqt:</strong> ${new Date(
+      me.createdAt
+    ).toLocaleString()}`;
     container.appendChild(createdAt);
     container.appendChild(deleteProfileBtn);
   } catch (error) {

@@ -1,4 +1,4 @@
-# 🎫  RailAir - Onlayn chipta xarid qilish tizimi
+# 🎫 RailAir - Onlayn chipta xarid qilish tizimi
 
 Ushbu loyiha foydalanuvchilarga poezd va avia chiptalarni onlayn qidirish, tanlash va xarid qilish imkoniyatini beradi. Tizim foydalanuvchining qulay interfeysda chiptalarni band qilishi va xarid qilishi uchun ishlab chiqilgan.
 
@@ -13,9 +13,11 @@ Ushbu loyiha foydalanuvchilarga poezd va avia chiptalarni onlayn qidirish, tanla
 - Admin tomonidan reyslarni boshqarish (ixtiyoriy)
 
 ---
+
 ## 🧩 Tizim talablari (shartlari)
 
 ### Foydalanuvchi:
+
 - Ro‘yxatdan o‘tish (name, email, password)
 - Login qilish va JWT token olish
 - Parolni unutgan foydalanuvchilar uchun tiklash tizimi
@@ -23,9 +25,9 @@ Ushbu loyiha foydalanuvchilarga poezd va avia chiptalarni onlayn qidirish, tanla
 - Chipta tanlash, yo‘lovchi ma’lumotlarini kiritish
 - Xarid qilish yoki band qilish
 - Xarid qilingan chiptalarni ko‘rish
-- Chiptani bekor qilish (agar ruxsat berilsa)
 
 ### Admin:
+
 - Admin panel orqali reyslar qo‘shish, tahrirlash, o‘chirish
 - Barcha foydalanuvchilarni va ularning chiptalarini boshqarish
 
@@ -40,25 +42,27 @@ Ushbu loyiha foydalanuvchilarga poezd va avia chiptalarni onlayn qidirish, tanla
 - Foydalanuvchining login urinishlari cheklangan va loglanadi
 
 ---
+
 ## 🗃️ Ma'lumotlar bazasi struktura (PostgreSQL + Prisma)
 
 ### 1. `User`
+
 ```prisma
 model User {
-  id         String   
+  id         String
   name       String
-  email      String   
+  email      String
   password   String
-  role       Role     
-  isBlocked  Boolean  
+  role       Role
+  isBlocked  Boolean
   tickets    Ticket[]
-  createdAt  DateTime 
+  createdAt  DateTime
 }
 
 
 ### 2. `Flight`
 model Flight {
-  id             String   
+  id             String
   from           String
   to             String
   departureTime  DateTime
@@ -72,7 +76,7 @@ model Flight {
 
  3. `Train`
 model Train {
-  id             String   
+  id             String
   from           String
   to             String
   departureTime  DateTime
@@ -86,30 +90,44 @@ model Train {
 
 ### 4. `Ticket`
 model Ticket {
-  id        String   
-  user      User     
+  id        String
+  user      User
   userId    String
-  flight    Flight?  
+  flight    Flight?
   flightId  String?
-  train     Train?   
+  train     Train?
   trainId   String?
   seatNumber Int
-  status    
+  status
+  passengerInfoId Int
 
   model PassengerInfo {
-  id         String   
+  id         String
   fullName   String
   gender     Gender
   birthDate  DateTime
   passport   String
-  ticket     Ticket   
-  ticketId   String
-}
-  
+  userId Int
+
 }
 
+}
 
+```
 
+## Client (Frontend) ni ishga tushirish
 
+- cd client
+- pnpm install # kerakli paketlarni o‘rnatish
+- nano .env # kerakli muhit o‘zgaruvchilarini kiritish
+- npm run start # frontendni ishga tushurish
 
+## Server (Backend) ni ishga tusirish
 
+- cd server
+- pnpm install # backend paketlarini o‘rnatish
+- nano .env # .env faylni to‘ldiring
+- npx prisma init # Prisma konfiguratsiya fayllarini yaratish
+- npx prisma generate # Prisma client generatsiyasi
+- npx prisma migrate dev --name init # Ma'lumotlar bazasini yaratish
+- npm run start:dev # backendni dev rejimda ishga tushurish

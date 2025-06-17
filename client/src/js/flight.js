@@ -22,7 +22,7 @@ form.addEventListener("submit", async (e) => {
     const response = await customAxios.post("/flight", flightData); 
 
     messageDiv.style.color = "green";
-    messageDiv.textContent = "Reys muvaffaqiyatli qo‘shildi!";
+    messageDiv.textContent = "Reys muvaffaqiyatli qo'shildi!";
     form.reset();
   } catch (err) {
     messageDiv.style.color = "red";

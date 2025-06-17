@@ -36,7 +36,7 @@ jobs:
         echo "Building and restarting server"
         cd ../server
         npm install
-        pm2 restart kinoTop || pm2 start src/main.js --name kinoTop
+        pm2 restart webhero || pm2 start src/main.js --name webhero
 
         echo "Deployment completed successfully"
         EOF

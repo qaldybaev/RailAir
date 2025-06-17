@@ -85,7 +85,7 @@ export class AuthService implements OnModuleInit {
   }
 
   async login(payload: LoginDto) {
-    const foundedUser = await this.prisma.user.findFirst({
+    const foundedUser = await this.prisma.user.findUnique({
       where: { email: payload.email },
     });
 
